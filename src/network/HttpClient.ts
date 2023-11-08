@@ -14,6 +14,10 @@ export default class HttpClient {
 	protected get(url: string) {
 		return this.axiosRef
 			.get(url, { signal: this.controller.signal })
+			.then((response: any) => {
+				console.log('response', response);
+				return response;
+			})
 			.catch(() => {
 				this.controller.abort();
 			});
