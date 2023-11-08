@@ -6,6 +6,7 @@ import FormSample from './pages/FormSample';
 import InterceptorSample from './pages/InterceptorSample';
 import ProductsPage from './pages/ProductsPage';
 import ProductDetailPage from './pages/ProductDetailPage';
+import CartSummarySample from './pages/CartSummarySample';
 
 const Layout = () => {
 	return (
@@ -15,6 +16,7 @@ const Layout = () => {
 					<Link to="/">Anasayfa</Link> <Link to="/forms">Forms</Link>{' '}
 					<Link to="/interceptors">Interceptor Sample</Link>{' '}
 					<Link to="/products">Products</Link>{' '}
+					<Link to="/cartSummary">Sepet Detay</Link>{' '}
 				</nav>
 				<main>
 					<Outlet />
@@ -49,6 +51,10 @@ function App() {
 							Component: ProductDetailPage,
 						},
 					],
+				},
+				{
+					path: '/cartSummary',
+					Component: CartSummarySample,
 				},
 			],
 		},

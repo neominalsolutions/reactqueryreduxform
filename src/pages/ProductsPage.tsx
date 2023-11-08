@@ -2,6 +2,9 @@ import { useQuery } from 'react-query';
 import React from 'react';
 import { Product, ProductApi } from '../api/ProductApi';
 import { Link, Outlet } from 'react-router-dom';
+import { RootDispatch, RootState } from '../redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { CartItem, addToCart } from '../redux/reducers/CartReducer';
 
 function ProductsPage() {
 	const productApi = new ProductApi();
@@ -21,6 +24,23 @@ function ProductsPage() {
 			},
 			//refetchInterval: 3000, // 3sn bu sayfadaki veri bayata refeleshle
 		});
+	// client state değiştirme için useDispatch kullanılır
+	const dispatch = useDispatch();
+	// state bilgisine erişmek için useSelector kullanılır
+	const successFullyAdded = useSelector(
+		(state: RootState) => state.CartState.successfully
+	);
+	const onAddToCart = (item: Product) => {
+		// redux reducer'a git
+		const cartItem: CartItem = {
+			quantity: 1,
+			name: item.ProductName,
+			id: item.ProductID,
+			price: item.UnitPrice,
+		};
+		// redux böyle aksiyonun alınacağını bildir.
+		dispatch(addToCart(cartItem));
+	};
 
 	if (isLoading) return <>... loading </>;
 
@@ -34,11 +54,14 @@ function ProductsPage() {
 	if (isFetched && isSuccess)
 		return (
 			<>
+				{successFullyAdded ? <>Ürün Sepete Eklendi</> : <></>}
 				{data.map((item: Product) => {
 					return (
 						<div key={item.ProductID}>
-							{item.ProductName}
-							<Link to={`/products/${item.ProductID}`}>Detayı</Link>
+							İsim: {item.ProductName} Fiyat: {item.UnitPrice} Stock:{' '}
+							{item.UnitsInStock}{' '}
+							<Link to={`/products/${item.ProductID}`}>Detayı</Link>{' '}
+							<button onClick={() => onAddToCart(item)}>Sepete Ekle</button>
 						</div>
 					);
 				})}
