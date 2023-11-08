@@ -34,7 +34,6 @@ function ProductsPage() {
 	if (isFetched && isSuccess)
 		return (
 			<>
-				
 				{data.map((item: Product) => {
 					return (
 						<div key={item.ProductID}>
